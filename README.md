@@ -32,7 +32,7 @@ None.
       gather_facts: no
       become: true
       roles:
-        - ansible-role-cumulus-users
+        - ansible-cumulus-users
 
 ## License
 
