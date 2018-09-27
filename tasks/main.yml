@@ -13,7 +13,7 @@
     authorized_key:
       user: infra
       state: present
-      key: "{{ public_ssh_key }}"
+      key: "http://{{ cl_oob_server }}/authorized_keys"
 
 #  - name: Set passwordless sudo for infra user
 #    shell: echo "infra ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/20_infra
