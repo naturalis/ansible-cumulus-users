@@ -14,17 +14,12 @@
       state: present
       key: "http://{{ cl_oob_server }}/authorized_keys"
 
-#  - name: Set passwordless sudo for infra user
-#    shell: echo "infra ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/20_infra
-#    tags:
-#      - users
-
   - name: Set passwordless sudo for mgmt user
     copy:
       content: "{{ mgmt_user }} ALL=(ALL) NOPASSWD:ALL"
       dest: /etc/sudoers.d/20_{{ mgmt_user }}
 
-  - name: Set nologin for cumulus user
-    user:
-      name: cumulus
-      shell: /usr/sbin/nologin
+#  - name: Set nologin for cumulus user
+#    user:
+#      name: cumulus
+#      shell: /usr/sbin/nologin
