@@ -1,25 +1,34 @@
-# Make infra user and remove default creds from cumulus
-  - name: Create a login user
-    user:
-      name: "{{ mgmt_user }}"
-      groups:
-        - sudo
-        - netedit
-      state: present
-      shell: /bin/bash
+# Make management users and remove default creds from cumulus
+- name: Allow 'adm' to passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%adm'
+    line: '%adm ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
 
-  - name: Install public ssh key
-    authorized_key:
-      user: "{{ mgmt_user }}"
-      state: present
-      key: "http://{{ cl_oob_server }}/authorized_keys"
+- name: create users
+  user:
+    name: "{{ item.username }}"
+    groups:
+      - adm
+      - netedit
+  with_items: "{{ admin_users }}"
 
-  - name: Set passwordless sudo for mgmt user
-    copy:
-      content: "{{ mgmt_user }} ALL=(ALL) NOPASSWD:ALL"
-      dest: /etc/sudoers.d/10_{{ mgmt_user }}
+- name: set ssh_dirs
+  file:
+    state: directory
+    name: /home/{{item.username}}/.ssh
+    owner: "{{item.username}}"
+    group: adm
+    mode: 0700
+  with_items: "{{ admin_users }}"
 
-#  - name: Set nologin for cumulus user
-#    user:
-#      name: cumulus
-#      shell: /usr/sbin/nologin
+- name: set public keys
+  copy:
+    content: {{ key_format | default ('ssh-rsa') }} {{ item.public_key }} {{ item.username }}
+    dest: /home/{{item.username}}/.ssh/authorized_keys
+    owner: "{{ item.username }}"
+    group: adm
+    mode: 0600
+  with_items: "{{ admin_users }}"
