@@ -26,7 +26,7 @@
 
 - name: set public keys
   copy:
-    content: {{ key_format | default ('ssh-rsa') }} {{ item.public_key }} {{ item.username }}
+    content: {{ item.key_format | default ('ssh-rsa') }} {{ item.public_key }} {{ item.username }}
     dest: /home/{{item.username}}/.ssh/authorized_keys
     owner: "{{ item.username }}"
     group: adm
