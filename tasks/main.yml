@@ -10,6 +10,7 @@
 - name: create users
   user:
     name: "{{ item.username }}"
+    shell: /bin/bash
     groups:
       - adm
       - netedit
