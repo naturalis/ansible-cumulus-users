@@ -1,0 +1,7 @@
+---
+cumulus_pass: CumulusLinux!
+ssh_root_login: without-password
+ssh_groups: adm
+ssh_port: 22
+ssh_pass_auth: 'yes'
+...

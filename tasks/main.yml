@@ -1,4 +1,42 @@
-# Make management users and remove default creds from cumulus
+# Add users, remove default creds and harden ssh
+- name: change cumulus user creds
+  user:
+    name: cumulus
+    password: "{{ cumulus_pass }}"
+    update_password: always
+
+- name: Set/unset password authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication {{ ssh_pass_auth }}"
+    state: present
+  notify: restart ssh
+
+- name: Set root SSH access
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin {{ ssh_root_login }}"
+    state: present
+  notify: restart ssh
+
+- name: Set SSH access groups
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^AllowGroups"
+    line: "AllowGroups {{ ssh_groups }}"
+    state: present
+  notify: restart ssh
+
+- name: Set ssh port
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^Port"
+    line: "Port {{ ssh_port }}"
+    state: present
+  notify: restart ssh
+
 - name: Allow 'adm' to passwordless sudo
   lineinfile:
     dest: /etc/sudoers
