@@ -1,13 +1,13 @@
 # Ansible Role: Cumulus users
 
-Used in [network](https://github.com/naturalis/network/) repo.
+Used to automate user managament on cumulus switches.
+
+This role can change the default credentials of the cumulus user, add some management users with ssh keys and harden ssh access.
 
 Runnable with:
 ```bash
-ansible-playbook playbooks/cumulus_users.yml -i environments/prod
+ansible-playbook playbooks/network/cumulus_users.yml -i inventories/production
 ```
-
-This role will configure an extra user for automation.
 
 ## Requirements
 
@@ -17,7 +17,14 @@ None.
 
 Available variables are listed below:
 ```bash
-public_ssh_key: http://172.16.200.254/authorized_keys
+cumulus_pass: CumulusLinux!
+ssh_root_login: without-password
+ssh_groups: adm
+ssh_port: 22
+ssh_pass_auth: yes
+admin_users:
+- username: testuser
+  public_key: AAAAB3blahahahaha
 ```
 
 ## Dependencies
@@ -25,7 +32,6 @@ public_ssh_key: http://172.16.200.254/authorized_keys
 None.
 
 ## Example Playbook
-
 
     - hosts: switches
       remote_user: cumulus
