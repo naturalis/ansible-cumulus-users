@@ -45,6 +45,14 @@
     line: '%adm ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
 
+- name: Set ssh grace time
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^LoginGraceTime"
+    line: "LoginGraceTime {{ ssh_grace }}"
+    state: present
+  notify: restart ssh
+
 - name: create users
   user:
     name: "{{ item.username }}"
