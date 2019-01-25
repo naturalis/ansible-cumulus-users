@@ -2,7 +2,7 @@
 
 Used to automate user managament on cumulus switches.
 
-This role can change the default credentials of the cumulus user, add some management users with ssh keys and harden ssh access.
+This role can change the default credentials of the cumulus user, add some management users with ssh keys and harden ssh access. Most of the ssh parameters are already set correctly in cumulus linux, so these are not set.
 
 Runnable with:
 ```bash
@@ -22,6 +22,7 @@ ssh_root_login: without-password
 ssh_groups: adm
 ssh_port: 22
 ssh_pass_auth: 'yes'
+ssh_grace: 30s
 admin_users:
 - username: testuser
   public_key: AAAAB3blahahahaha
