@@ -4,10 +4,7 @@ Used to automate user managament on cumulus switches.
 
 This role can change the default credentials of the cumulus user, add some management users with ssh keys and harden ssh access. Most of the ssh parameters are already set correctly in cumulus linux, so these are not set.
 
-Runnable with:
-```bash
-ansible-playbook playbooks/network/cumulus_users.yml -i inventories/production
-```
+Naturalis uses this role together with a private inventory.
 
 ## Requirements
 
